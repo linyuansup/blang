@@ -52,11 +52,20 @@ int handle_token(int token) {
 %%
 
 \/\*([^\*]|\*[^\/])*\*+\/  {
-    
+    column_start_number = column_end_number;
+    for (unsigned i = 0; i < strlen(yytext); i++) {
+        if (yytext[i] == '\n') {
+            line_number++;
+            column_end_number = 0;
+        } else {
+            column_end_number++;
+        }
+    }
 }
 
 \/\/.*  {
-
+    column_start_number = column_end_number;
+    column_end_number += strlen(yytext);
 }
 
 int { return handle_token( INT);}
@@ -76,9 +85,15 @@ return { return handle_token(RETURN);}
 "{" { return handle_token( LBRACE); }
 "}" { return handle_token( RBRACE);}
 ";" { return handle_token( SEMICOLON); }
+"=" { return handle_token( ASSIGN); }
+"," { return handle_token( COMMA); }
+">" { return handle_token( GREATER); }
+"==" { return handle_token( EQUAL); }
 
 \n {
-
+    line_number++;
+    column_start_number = column_end_number;
+    column_end_number = 0;
 }
 
 " "|\r {
