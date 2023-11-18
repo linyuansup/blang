@@ -60,7 +60,7 @@
 %type <stmt> Stmt
 %type <expr> Exp
 %type <stmt> Decl
-%type <stmt> VarDecl 
+%type <stmt> VarDecl
 %type <var_decl_stmt> VarDefGroup
 %type <var_def_stmt> VarDef
 %type <expr> InitVal
